@@ -24,6 +24,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { MotionFadeUp, MotionSlideIn } from "./MotionWrapper";
+import GalleryLightbox from "./GalleryLightbox";
 import type { ApartmentData } from "@/lib/types";
 import { useT } from "@/lib/i18n/context";
 import { siteConfig } from "@/lib/site-config";
@@ -72,7 +73,14 @@ export default function ApartmentDetailClient({ apt, slug }: { apt: ApartmentDat
 
   const images = aptLocal.images ?? [];
   const [activeIndex, setActiveIndex] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const activeImage = images[activeIndex];
+
+  const lightboxItems = images.map((img) => ({
+    title: aptLocal.type,
+    category: img.alt || aptLocal.type,
+    imageUrl: img.imageUrl,
+  }));
 
   return (
     <>
@@ -96,7 +104,10 @@ export default function ApartmentDetailClient({ apt, slug }: { apt: ApartmentDat
             {/* Gallery */}
             <MotionSlideIn direction="left" className="lg:col-span-3">
               {/* Main Image */}
-              <div className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-stone/20 to-light-gray">
+              <div
+                className="relative cursor-zoom-in overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-stone/20 to-light-gray"
+                onClick={() => activeImage && setLightboxIndex(activeIndex)}
+              >
                 <div className="relative flex aspect-[16/10] items-center justify-center">
                   {activeImage ? (
                     <img
@@ -342,6 +353,26 @@ export default function ApartmentDetailClient({ apt, slug }: { apt: ApartmentDat
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal */}
+      {lightboxIndex !== null && (
+        <GalleryLightbox
+          items={lightboxItems}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() =>
+            setLightboxIndex((prev) =>
+              prev !== null ? (prev - 1 + lightboxItems.length) % lightboxItems.length : 0
+            )
+          }
+          onNext={() =>
+            setLightboxIndex((prev) =>
+              prev !== null ? (prev + 1) % lightboxItems.length : 0
+            )
+          }
+          labels={t.gallery.lightbox}
+        />
+      )}
     </>
   );
 }
