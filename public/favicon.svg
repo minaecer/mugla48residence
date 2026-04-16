@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#1a1917"/>
+  <!-- 4 - turquoise, geometric style matching logo -->
+  <path d="M28 12 L28 38 L10 38 L28 12Z" fill="none" stroke="#3ecdc6" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="28" y1="38" x2="28" y2="52" stroke="#3ecdc6" stroke-width="3"/>
+  <!-- 8 - two red circles matching logo -->
+  <circle cx="47" cy="22" r="9" fill="none" stroke="#e63946" stroke-width="3"/>
+  <circle cx="47" cy="43" r="10" fill="none" stroke="#e63946" stroke-width="3"/>
+</svg>

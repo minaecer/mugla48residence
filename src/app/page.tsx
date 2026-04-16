@@ -16,17 +16,15 @@ import Footer from "@/components/Footer";
 import MobileCTA from "@/components/MobileCTA";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { getPublishedApartments } from "@/lib/data/apartments";
-import { getPublishedTestimonials } from "@/lib/data/testimonials";
 import { getHomepageGalleryItems } from "@/lib/data/gallery";
 import { getAllSiteContent } from "@/lib/data/site-content";
 
 export default async function Home() {
-  let apartments, testimonials, galleryItems, siteContent;
+  let apartments, galleryItems, siteContent;
 
   try {
-    [apartments, testimonials, galleryItems, siteContent] = await Promise.all([
+    [apartments, galleryItems, siteContent] = await Promise.all([
       getPublishedApartments(),
-      getPublishedTestimonials(),
       getHomepageGalleryItems(),
       getAllSiteContent(),
     ]);
@@ -62,7 +60,7 @@ export default async function Home() {
         <RentalModels models={rentalModelsData} />
         <Gallery items={galleryItems} />
         <Location />
-        <Testimonials testimonials={testimonials} />
+        <Testimonials />
         <About content={aboutData} />
         <ContactForm />
         <CtaBand />

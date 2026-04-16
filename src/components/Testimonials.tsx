@@ -1,25 +1,11 @@
 "use client";
 
-import { Star, Quote } from "lucide-react";
-import { MotionFadeUp, MotionStagger, MotionStaggerItem } from "./MotionWrapper";
+import { Star, ExternalLink } from "lucide-react";
+import { MotionFadeUp } from "./MotionWrapper";
 import { useT } from "@/lib/i18n/context";
 
-type TestimonialItem = {
-  name: string;
-  role: string;
-  rating: number;
-  text: string;
-  theme?: string;
-};
-
-export default function Testimonials({ testimonials: testimonialsProp }: { testimonials?: TestimonialItem[] }) {
-  const { t, locale } = useT();
-
-  const useDbData = locale !== "en" && testimonialsProp && testimonialsProp.length > 0;
-
-  const testimonials: TestimonialItem[] = useDbData
-    ? testimonialsProp!
-    : t.testimonials.list.map((item) => ({ ...item, rating: 5 }));
+export default function Testimonials() {
+  const { t } = useT();
 
   return (
     <section className="section-padding bg-white">
@@ -46,37 +32,30 @@ export default function Testimonials({ testimonials: testimonialsProp }: { testi
           </div>
         </MotionFadeUp>
 
-        <MotionStagger className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {testimonials.map((item) => (
-            <MotionStaggerItem key={item.name}>
-              <figure className="relative flex h-full flex-col justify-between rounded-2xl border border-line bg-cream p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-white hover:shadow-[0_14px_40px_-22px_rgba(20,19,18,0.18)]">
-                <Quote className="h-7 w-7 text-accent/30" strokeWidth={1.5} />
+        {/* Google Reviews Embed */}
+        <div className="mt-16 flex justify-center">
+          <div className="w-full max-w-4xl overflow-hidden rounded-2xl border border-line bg-cream">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d28.3667!3d37.2153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sMugla48+Residence!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str"
+              className="aspect-[16/9] w-full border-0 sm:aspect-[2/1]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Mugla 48 Residence Google Yorumları"
+            />
+          </div>
+        </div>
 
-                <blockquote className="mt-5 flex-1 text-[0.9375rem] leading-relaxed text-primary/85">
-                  &ldquo;{item.text}&rdquo;
-                </blockquote>
-
-                <div className="mt-5 flex gap-0.5">
-                  {Array.from({ length: item.rating }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-accent text-accent" />
-                  ))}
-                </div>
-
-                <figcaption className="mt-5 flex items-center justify-between border-t border-line pt-5">
-                  <div>
-                    <p className="text-[0.875rem] font-semibold text-primary">{item.name}</p>
-                    <p className="mt-0.5 text-[0.75rem] text-muted">{item.role}</p>
-                  </div>
-                  {item.theme && (
-                    <span className="rounded-full bg-accent/10 px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-wider text-accent">
-                      {item.theme}
-                    </span>
-                  )}
-                </figcaption>
-              </figure>
-            </MotionStaggerItem>
-          ))}
-        </MotionStagger>
+        <div className="mt-8 text-center">
+          <a
+            href="https://search.google.com/local/reviews?placeid=ChIJN1t_tDEFskARo591FglHkAo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+          >
+            Google Yorumlarını Gör
+            <ExternalLink size={14} />
+          </a>
+        </div>
       </div>
     </section>
   );

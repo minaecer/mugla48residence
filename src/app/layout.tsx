@@ -16,6 +16,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.svg",
+  },
   title: "Muğla 48 Residence | Premium Kiralık Daireler - Menteşe",
   description:
     "Muğla Menteşe'de günlük, haftalık, aylık ve yıllık kiralık tam donanımlı 1+1 ve 2+1 premium residence daireler. Şehir merkezinde lüks ve konforlu yaşam.",
