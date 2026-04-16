@@ -64,7 +64,7 @@ export default function Location() {
             <div className="relative overflow-hidden rounded-2xl border border-line bg-white shadow-[0_14px_40px_-22px_rgba(20,19,18,0.18)]">
               <iframe
                 title="Muğla 48 Residence"
-                src="https://www.google.com/maps?q=Mu%C4%9Fla%20Mente%C5%9Fe&output=embed"
+                src="https://www.google.com/maps?q=Mugla48+Residence+Muğla+Menteşe&output=embed"
                 className="aspect-square w-full lg:aspect-[4/5]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
