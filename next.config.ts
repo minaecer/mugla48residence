@@ -19,6 +19,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   `connect-src 'self' ${mediaProto}//${mediaHost}`,
+  "frame-src 'self' https://www.google.com https://maps.google.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -35,6 +36,7 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "minio", port: "9000", pathname: "/**" },
       // Production MinIO (dynamic)
       { protocol: "https", hostname: mediaHost.split(":")[0], pathname: "/**" },
+      { protocol: "http", hostname: mediaHost.split(":")[0], pathname: "/**" },
     ],
   },
   async headers() {
