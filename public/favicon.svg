@@ -1,10 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <rect width="64" height="64" rx="12" fill="#1a1917"/>
-  <!-- 4 - turquoise lines matching logo style -->
-  <polyline points="10,36 26,10 26,36" fill="none" stroke="#3ecdc6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="10" y1="36" x2="30" y2="36" stroke="#3ecdc6" stroke-width="3.5" stroke-linecap="round"/>
-  <line x1="26" y1="36" x2="26" y2="54" stroke="#3ecdc6" stroke-width="3.5" stroke-linecap="round"/>
-  <!-- 8 - two red circles matching logo -->
-  <circle cx="47" cy="21" r="8.5" fill="none" stroke="#e63946" stroke-width="3"/>
-  <circle cx="47" cy="42" r="10" fill="none" stroke="#e63946" stroke-width="3"/>
+  <text x="7" y="50" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="48" fill="#3ecdc6">4</text>
+  <text x="34" y="50" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="48" fill="#e63946">8</text>
 </svg>
