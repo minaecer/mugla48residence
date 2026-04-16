@@ -24,7 +24,11 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError("E-posta veya şifre hatalı.");
+        setError(
+          result.error.includes("TOO_MANY_ATTEMPTS")
+            ? "Çok fazla deneme. Lütfen 15 dakika bekleyin."
+            : "E-posta veya şifre hatalı."
+        );
       } else {
         router.push("/admin/dashboard");
         router.refresh();

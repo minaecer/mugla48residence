@@ -8,7 +8,7 @@ let mediaHost = "localhost:5002";
 try {
   mediaHost = new URL(mediaBaseUrl).host;
 } catch {}
-const mediaProto = isProd ? "https:" : "http:";
+const mediaProto = mediaBaseUrl.startsWith("https") ? "https:" : "http:";
 
 const csp = [
   "default-src 'self'",
@@ -22,7 +22,7 @@ const csp = [
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
-  "upgrade-insecure-requests",
+  ...(isProd && mediaProto === "https:" ? ["upgrade-insecure-requests"] : []),
 ].join("; ");
 
 const nextConfig: NextConfig = {
