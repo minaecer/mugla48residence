@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Palette — warm neutrals + refined bronze */
+  --color-primary: #1F1D1A;
+  --color-dark: #141312;
+  --color-muted: #6E6A63;
+  --color-line: #EBE6DE;
+  --color-stone: #D8D2C8;
+  --color-light-gray: #EEEAE4;
+  --color-cream: #FAF8F5;
+  --color-accent: #B08A52;
+  --color-accent-dark: #8F6F3E;
+  --color-accent-soft: #EFE4D1;
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+
+  /* Premium shadow system */
+  --shadow-soft: 0 1px 2px rgba(20, 19, 18, 0.04), 0 2px 6px rgba(20, 19, 18, 0.04);
+  --shadow-card: 0 14px 40px -22px rgba(20, 19, 18, 0.18), 0 4px 10px -4px rgba(20, 19, 18, 0.06);
+  --shadow-elevated: 0 30px 60px -24px rgba(20, 19, 18, 0.24);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  color: var(--color-dark);
+  background: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+  font-variant-numeric: oldstyle-nums;
+}
+
+h1, h2, h3, h4 { text-wrap: balance; }
+p, blockquote { text-wrap: pretty; }
+
+/* Refined focus — bronze ring */
+:where(button, a, input, textarea, select):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(176, 138, 82, 0.28);
+  border-radius: 6px;
+}
+
+/* Respect user motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Glass effects */
+.glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.glass-dark {
+  background: rgba(31, 29, 26, 0.82);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* Section rhythm */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 6.5rem;
+    padding-bottom: 6.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+
+/* Hero overlay — darker/cleaner */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse at top left, rgba(31, 29, 26, 0.55) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(20, 19, 18, 0.55) 0%, rgba(20, 19, 18, 0.75) 60%, rgba(20, 19, 18, 0.92) 100%);
+}
+
+/* Gold/bronze text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #C9A872 0%, #E6D2A9 50%, #B08A52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ------- Reusable UI primitives ------- */
+@layer components {
+  .container-page {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) { .container-page { padding-left: 1.5rem; padding-right: 1.5rem; } }
+  @media (min-width: 1024px) { .container-page { padding-left: 2rem; padding-right: 2rem; } }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .heading-display {
+    font-family: var(--font-display), serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+    line-height: 1.1;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--color-dark); transform: translateY(-1px); box-shadow: var(--shadow-card); }
+  .btn-accent {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .btn-accent:hover { background: var(--color-accent-dark); transform: translateY(-1px); box-shadow: var(--shadow-card); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-line);
+  }
+  .btn-ghost:hover { background: var(--color-cream); border-color: var(--color-accent); color: var(--color-accent); }
+  .btn-outline-light {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+  }
+  .btn-outline-light:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.5); }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-soft);
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  }
+  .card:hover { box-shadow: var(--shadow-card); border-color: var(--color-stone); }
+
+  .input-field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-line);
+    background: #fff;
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+    color: var(--color-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .input-field::placeholder { color: var(--color-muted); }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(176, 138, 82, 0.12);
+    background: var(--color-cream);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border: 1px solid var(--color-line);
+    background: #fff;
+    border-radius: 9999px;
+    padding: 0.3125rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+
+  .divider-dot::before {
+    content: "";
+    display: inline-block;
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    margin-right: 0.625rem;
+    vertical-align: middle;
+  }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Gold hairline used between sections / inside cards */
+  .hairline-accent {
+    position: relative;
+  }
+  .hairline-accent::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 48px;
+    height: 2px;
+    background: var(--color-accent);
+  }
+
+  /* CTA band (pre-footer) */
+  .cta-band {
+    background: var(--color-primary);
+    background-image:
+      radial-gradient(ellipse at top right, rgba(176, 138, 82, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(176, 138, 82, 0.08) 0%, transparent 50%);
+  }
+}

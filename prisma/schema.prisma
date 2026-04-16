@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Apartment {
+  id                Int              @id @default(autoincrement())
+  slug              String           @unique
+  type              String
+  size              String
+  capacity          String
+  description       String
+  longDescription   String
+  rooms             String // JSON
+  kitchen           String // JSON
+  bathroom          String // JSON
+  general           String // JSON
+  rentalSuitability String // JSON
+  features          String // JSON
+  accent            String
+  isPublished       Boolean          @default(true)
+  order             Int              @default(0)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  images            ApartmentImage[]
+  reservations      Reservation[]
+  galleryImages     GalleryImage[]
+}
+
+model ApartmentImage {
+  id          Int       @id @default(autoincrement())
+  apartmentId Int
+  apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  imageUrl    String
+  alt         String
+  order       Int       @default(0)
+}
+
+model ContactSubmission {
+  id            Int      @id @default(autoincrement())
+  name          String
+  phone         String
+  email         String?
+  rentalType    String?
+  apartmentType String?
+  message       String?
+  status        String   @default("NEW")
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model GalleryImage {
+  id          Int       @id @default(autoincrement())
+  title       String
+  category    String
+  imageUrl    String
+  order       Int       @default(0)
+  height      String?
+  span        String?
+  apartmentId Int?
+  apartment   Apartment? @relation(fields: [apartmentId], references: [id])
+  isPublished Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+}
+
+model Reservation {
+  id          Int       @id @default(autoincrement())
+  apartmentId Int
+  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  guestName   String
+  guestPhone  String
+  guestEmail  String?
+  checkIn     DateTime
+  checkOut    DateTime
+  status      String    @default("PENDING")
+  rentalType  String?
+  notes       String?
+  totalPrice  Float?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Testimonial {
+  id          Int      @id @default(autoincrement())
+  name        String
+  role        String
+  rating      Int
+  text        String
+  theme       String?
+  isPublished Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model SiteContent {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}

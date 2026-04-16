@@ -1,0 +1,94 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:-mugla48}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB:-mugla48}"
+    ports:
+      - "5436:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mugla48} -d ${POSTGRES_DB:-mugla48}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - mugla48-net
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-mugla48admin}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}"
+    ports:
+      - "5002:9000"   # S3 API
+      - "5003:9001"   # Web console
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - mugla48-net
+
+  minio-init:
+    image: minio/mc:latest
+    restart: "no"
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: |
+      /bin/sh -c "
+        mc alias set local http://minio:9000 $${MINIO_ROOT_USER:-mugla48admin} $${MINIO_ROOT_PASSWORD:-mugla48pass} &&
+        mc mb --ignore-existing local/$${S3_BUCKET:-mugla48-media} &&
+        mc anonymous set download local/$${S3_BUCKET:-mugla48-media} &&
+        echo 'bucket ready'
+      "
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER:-mugla48admin}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}"
+      S3_BUCKET: "${S3_BUCKET:-mugla48-media}"
+    networks:
+      - mugla48-net
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    ports:
+      - "3048:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-mugla48}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-mugla48}?schema=public"
+      AUTH_SECRET: "${AUTH_SECRET:?Set AUTH_SECRET}"
+      AUTH_TRUST_HOST: "true"
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: us-east-1
+      S3_ACCESS_KEY: "${MINIO_ROOT_USER:-mugla48admin}"
+      S3_SECRET_KEY: "${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}"
+      S3_BUCKET: "${S3_BUCKET:-mugla48-media}"
+      MEDIA_BASE_URL: "${MEDIA_BASE_URL:?Set MEDIA_BASE_URL}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:?Set ADMIN_PASSWORD}"
+    networks:
+      - mugla48-net
+
+volumes:
+  pg-data:
+  minio-data:
+
+networks:
+  mugla48-net:
+    driver: bridge
