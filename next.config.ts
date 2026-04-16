@@ -12,7 +12,7 @@ const mediaProto = mediaBaseUrl.startsWith("https") ? "https:" : "http:";
 
 const csp = [
   "default-src 'self'",
-  `img-src 'self' data: ${mediaProto}//${mediaHost}`,
+  `img-src 'self' data: ${mediaProto}//${mediaHost} https://mugla48residence.com`,
   // Next.js requires unsafe-inline for hydration scripts; unsafe-eval only in dev (hot reload)
   `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
   // Tailwind injects styles via <style> tags, unsafe-inline required
@@ -34,6 +34,9 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "localhost", port: "5002", pathname: "/**" },
       // Docker internal
       { protocol: "http", hostname: "minio", port: "9000", pathname: "/**" },
+      { protocol: "http", hostname: "mugla48-minio", port: "9000", pathname: "/**" },
+      // Production - same domain media proxy
+      { protocol: "https", hostname: "mugla48residence.com", pathname: "/**" },
       // Production MinIO (dynamic)
       { protocol: "https", hostname: mediaHost.split(":")[0], pathname: "/**" },
       { protocol: "http", hostname: mediaHost.split(":")[0], pathname: "/**" },
