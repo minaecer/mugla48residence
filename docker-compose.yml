@@ -46,6 +46,7 @@ services:
       start_period: 30s
     networks:
       - mugla48-net
+      - coolify
 
   minio-init:
     image: minio/mc:latest
@@ -91,6 +92,7 @@ services:
       ADMIN_PASSWORD: "${ADMIN_PASSWORD:?Set ADMIN_PASSWORD}"
     networks:
       - mugla48-net
+      - coolify
 
 volumes:
   pg-data:
@@ -99,3 +101,5 @@ volumes:
 networks:
   mugla48-net:
     driver: bridge
+  coolify:
+    external: true
