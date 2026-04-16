@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:17-alpine
+    hostname: mugla48-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: "${POSTGRES_USER:-mugla48}"
@@ -24,6 +25,7 @@ services:
 
   minio:
     image: minio/minio:latest
+    hostname: mugla48-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
@@ -56,7 +58,7 @@ services:
         condition: service_healthy
     entrypoint: |
       /bin/sh -c "
-        mc alias set local http://minio:9000 $${MINIO_ROOT_USER:-mugla48admin} $${MINIO_ROOT_PASSWORD:-mugla48pass} &&
+        mc alias set local http://mugla48-minio:9000 $${MINIO_ROOT_USER:-mugla48admin} $${MINIO_ROOT_PASSWORD:-mugla48pass} &&
         mc mb --ignore-existing local/$${S3_BUCKET:-mugla48-media} &&
         mc anonymous set download local/$${S3_BUCKET:-mugla48-media} &&
         echo 'bucket ready'
@@ -80,10 +82,10 @@ services:
       - "3048:3000"
     environment:
       NODE_ENV: production
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-mugla48}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-mugla48}?schema=public"
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-mugla48}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@mugla48-db:5432/${POSTGRES_DB:-mugla48}?schema=public"
       AUTH_SECRET: "${AUTH_SECRET:?Set AUTH_SECRET}"
       AUTH_TRUST_HOST: "true"
-      S3_ENDPOINT: http://minio:9000
+      S3_ENDPOINT: http://mugla48-minio:9000
       S3_REGION: us-east-1
       S3_ACCESS_KEY: "${MINIO_ROOT_USER:-mugla48admin}"
       S3_SECRET_KEY: "${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}"
