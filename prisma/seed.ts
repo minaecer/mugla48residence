@@ -219,10 +219,10 @@ async function main() {
       { icon: "CalendarRange", title: "Aylık", description: "Orta dönem konaklama ihtiyaçları için uygun fiyatlı ve konforlu çözüm.", highlight: true },
       { icon: "CalendarCheck", title: "Yıllık", description: "Uzun dönem kiralama ile evinizin konforunda, en uygun koşullarda yaşam.", highlight: false },
     ]) },
-    { key: "contact_phone", value: "0555 123 45 67" },
+    { key: "contact_phone", value: "0252 213 10 81" },
     { key: "contact_email", value: "info@mugla48residence.com" },
     { key: "contact_address", value: "Menteşe, Muğla" },
-    { key: "contact_whatsapp", value: "+905551234567" },
+    { key: "contact_whatsapp", value: "+905061682740" },
     { key: "nearby_places", value: JSON.stringify([{ icon: "GraduationCap", label: "Muğla Sıtkı Koçman Üniversitesi", distance: "~ 5 dk" }, { icon: "Stethoscope", label: "Muğla Devlet Hastanesi", distance: "~ 5 dk" }, { icon: "ShoppingBag", label: "Menteşe Çarşı Merkezi", distance: "~ 3 dk" }, { icon: "Landmark", label: "Resmi Kurumlar", distance: "~ 5 dk" }, { icon: "Bus", label: "Şehirlerarası Otobüs Terminali", distance: "~ 10 dk" }, { icon: "MapPin", label: "Muğla Merkez", distance: "Yürüme mesafesinde" }]) },
   ];
   for (const content of siteContent) {
